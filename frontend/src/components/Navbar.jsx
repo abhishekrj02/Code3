@@ -34,7 +34,7 @@ export default function Navbar() {
           About
         </Link>
         <Link
-          to="https://code3-v1.vercel.app/"
+          to="https://code3course.vercel.app/"
           className="hover:text-gray-300 flex items-center gap-2"
         > 
           <FileText size={20} className="text-gray-400" />
