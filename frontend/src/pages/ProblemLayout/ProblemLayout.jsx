@@ -153,7 +153,7 @@ const Output = ({ code, minting, setMinting, testCases }) => {
 
     try {
       console.log(code);
-      const response = await axios.post("https://code3-zbp7.onrender.com/compile", { "code": code });
+      const response = await axios.post("http://localhost:3001/compile", { "code": code });
       console.log(response);
       setOutput("Compilation successful!");
     } catch (error) {
@@ -166,7 +166,7 @@ const Output = ({ code, minting, setMinting, testCases }) => {
     setOutput("Running contract...\n");
 
     try {
-      const response = await axios.post("https://code3-zbp7.onrender.com/submit", { "code": code, "testCases": testCases });
+      const response = await axios.post("http://localhost:3001/submit", { "code": code, "testCases": testCases });
       console.log(response);
       const testResults = response.data.testResults;
 
