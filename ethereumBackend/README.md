@@ -28,8 +28,8 @@ Ensure you have the following installed:
 
 - Clone the repository:
 ```
-git clone <repository-url>
-cd <repository-name>
+git clone https://github.com/abhishekrj02/Code3
+cd Code3/ethereumBackend
 ```
 
 - Install dependencies:
@@ -47,7 +47,7 @@ PRIVATE_KEY=<Your_Private_Key>
 
 - Start the Server
 
-- node server.js
+- npm start
 
 - The server will run on http://localhost:3001.
 
