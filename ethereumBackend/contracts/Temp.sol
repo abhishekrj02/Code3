@@ -5,7 +5,7 @@ contract PrimeChecker {
     function isPrime(uint256 num) public pure returns (bool) {
         if (num < 2) return false;
             for (uint256 i = 2; i * i <= num; i++) {
-                if (num % i == 0) return true;
+                if (num % i == 0) return false;
             }
             return true;
     }
