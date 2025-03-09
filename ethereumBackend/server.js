@@ -1,12 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const { execSync } = require('child_process');
-const { ethers } = require('hardhat');
+const { ethers } = require('ethers');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
 // Function to compile Solidity code
 const compileContract = (solidityCode) => {
@@ -103,12 +107,12 @@ app.post('/compile', async (req, res) => {
 
     if (!result.success) {
         return res.status(400).json(result);
-    }else{
+    } else {
         return res.status(200).json(result);
     }
 });
 
-// Route for submiting Solidity contract and verifying test cases
+// Route for submitting Solidity contract and verifying test cases
 app.post('/submit', async (req, res) => {
     const { code, testCases } = req.body;
     if (!code) {
@@ -124,20 +128,23 @@ app.post('/submit', async (req, res) => {
 
     try {
         const compiledContract = require('./artifacts/contracts/Temp.sol/Temp.json');
-        const [deployer] = await ethers.getSigners();
-        console.log("Deploying from account:", deployer.address);
-        const factory = await ethers.getContractFactory("Temp", deployer);
-        // const factory = await ethers.getContractFactory(result.contractName, deployer);
+
+        console.log("Deploying from account:", wallet.address);
+
+        const factory = new ethers.ContractFactory(compiledContract.abi, compiledContract.bytecode, wallet);
         const contract = await factory.deploy();
+
+        console.log("Waiting for contract deployment...");
         await contract.waitForDeployment();
 
-        console.log("Contract deployed at:", await contract.getAddress());
+        const contractAddress = await contract.getAddress();
+        console.log("Contract deployed at:", contractAddress);
 
         const testResults = await executeTestCases(contract, testCases);
 
         res.json({
             success: true,
-            address: await contract.getAddress(),
+            address: contractAddress,
             abi: compiledContract.abi,
             testResults
         });
@@ -149,3 +156,4 @@ app.post('/submit', async (req, res) => {
 });
 
 app.listen(3001, () => console.log('Server running on port 3001'));
+
