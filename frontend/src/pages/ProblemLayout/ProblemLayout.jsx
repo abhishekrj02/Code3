@@ -21,14 +21,25 @@ const ProblemDetails = ({
 
 }) => {
 
-
+  const getDifficultyClass = (difficulty) => {
+    switch (difficulty) {
+      case "Easy":
+        return "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100";
+      case "Medium":
+        return "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-100";
+      case "Hard":
+        return "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100";
+      default:
+        return "bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100"; // Default case
+    }
+  };
   return (
     <div className="space-y-4 pr-4">
 
 
       <h1 className="text-2xl font-bold mr-4">{heading}</h1>
       <div className="flex space-x-2">
-        <span className="px-2 py-1 text-sm font-semibold bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 rounded-full">
+        <span className={`px-2 py-1 text-sm font-semibold rounded-full ${getDifficultyClass(difficulty)}`}>
           {difficulty}
         </span>
         <span className="px-2 py-1 text-sm font-semibold bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded-full">
